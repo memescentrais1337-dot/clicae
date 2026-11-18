@@ -1,0 +1,6 @@
+{
+  "name": "CLICAÊ — Páginas de Bio Personalizadas",
+  "description": "Muito mais que um link na bio. Criamos experiências digitais exclusivas para marcas, negócios e profissionais.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

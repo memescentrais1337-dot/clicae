@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 44" fill="none">
+  <rect width="44" height="44" rx="12" fill="#161827"/>
+  <path d="M12 22c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10" stroke="#2457FF" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="28" cy="28" r="5" fill="#FF684F"/>
+  <text x="54" y="31" font-family="'Outfit', 'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="24" fill="#FFFFFF" letter-spacing="-0.5">CLICA<tspan fill="#FF684F">Ê</tspan></text>
+</svg>

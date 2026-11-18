@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Outfit", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  
+  --color-electric: #2457FF;
+  --color-electric-hover: #1b44d4;
+  --color-coral: #FF684F;
+  --color-coral-hover: #e8533a;
+  --color-ice: #F5F6FA;
+  --color-graphite: #161827;
+  --color-graphite-light: #1F2237;
+  --color-surface-dark: #0D0F1D;
+  --color-bg-base: #0B0D17;
+}
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0D17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F2237;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2457FF;
+}
+
+/* Subtle glow effects */
+.glow-electric {
+  box-shadow: 0 0 35px -5px rgba(36, 87, 255, 0.35);
+}
+
+.glow-coral {
+  box-shadow: 0 0 35px -5px rgba(255, 104, 79, 0.35);
+}
+
+.text-gradient-electric {
+  background: linear-gradient(135deg, #F5F6FA 0%, #A5B4FC 60%, #2457FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-coral {
+  background: linear-gradient(135deg, #FF8E78 0%, #FF684F 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-glass {
+  background: rgba(22, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bg-glass-card {
+  background: linear-gradient(135deg, rgba(31, 34, 55, 0.6) 0%, rgba(22, 24, 39, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Hide scrollbars cleanly for horizontal mobile carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Clean mobile tap feedback */
+@media (hover: none) {
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
