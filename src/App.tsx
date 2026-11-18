@@ -59,6 +59,7 @@ export default function App() {
         <Hero
           onOpenQuote={handleOpenQuote}
           onExploreProjects={handleExploreProjects}
+          introFinished={!showIntro}
         />
 
         {/* Section 2: O Problema (Before / After Comparison) */}

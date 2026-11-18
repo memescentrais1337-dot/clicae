@@ -11,6 +11,7 @@ import { ArrowRight, ChevronDown, Layers, Palette, Zap } from 'lucide-react';
 interface HeroProps {
   onOpenQuote: () => void;
   onExploreProjects: () => void;
+  introFinished?: boolean;
 }
 
 interface HeroShowcaseModel {
@@ -97,7 +98,11 @@ const SHOWCASE_MODELS: HeroShowcaseModel[] = [
   },
 ];
 
-export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) => {
+export const Hero: React.FC<HeroProps> = ({
+  onOpenQuote,
+  onExploreProjects,
+  introFinished = true,
+}) => {
   const [percentCount, setPercentCount] = useState(100);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const [activeModelId, setActiveModelId] = useState<string>('tocae');
@@ -332,6 +337,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
                   avatarText={activeModel.avatarText}
                   screenVideoUrl={activeModel.videoUrl}
                   videoAspectRatio={activeModel.videoAspectRatio}
+                  playWhenVisible={introFinished}
                   className="w-full"
                 />
               </div>

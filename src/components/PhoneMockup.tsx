@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MessageCircle,
   Menu as MenuIcon,
@@ -54,6 +54,7 @@ interface PhoneMockupProps {
   screenVideoUrl?: string;
   videoAspectRatio?: string;
   videoTitle?: string;
+  playWhenVisible?: boolean;
   compact?: boolean;
   className?: string;
   onActionClick?: (actionTitle: string) => void;
@@ -72,17 +73,64 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
   screenVideoUrl,
   videoAspectRatio,
   videoTitle: _videoTitle,
+  playWhenVisible = true,
   compact = false,
   className = '',
   onActionClick,
 }) => {
   const [videoReady, setVideoReady] = useState(false);
   const [measuredRatio, setMeasuredRatio] = useState<string | undefined>(videoAspectRatio);
+  const [isInView, setIsInView] = useState(false);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     setVideoReady(false);
     setMeasuredRatio(videoAspectRatio);
+    hasStartedRef.current = false;
   }, [screenVideoUrl, videoAspectRatio]);
+
+  useEffect(() => {
+    const el = videoContainerRef.current;
+    if (!screenVideoUrl || !el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInView(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [screenVideoUrl]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !screenVideoUrl) return;
+
+    if (playWhenVisible && isInView) {
+      if (!hasStartedRef.current) {
+        try {
+          video.currentTime = 0;
+        } catch {
+          // ignore if metadata not yet seekable
+        }
+        hasStartedRef.current = true;
+      }
+      video.play().catch(() => {
+        // ignore autoplay policy promise rejection
+      });
+    } else {
+      video.pause();
+    }
+  }, [playWhenVisible, isInView, screenVideoUrl]);
 
   const getIcon = (name: PhoneAction['iconName']) => {
     const iconClass = 'w-4 h-4 shrink-0';
@@ -161,7 +209,10 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
 
         {/* Full-Frame Uncropped Video Display Mode (No captions or badges over video) */}
         {screenVideoUrl ? (
-          <div className="relative w-full h-full overflow-hidden z-10 pointer-events-none">
+          <div
+            ref={videoContainerRef}
+            className="relative w-full h-full overflow-hidden z-10 pointer-events-none"
+          >
             {/* Instant lightweight visual fallback while video metadata/frames stream on mobile */}
             {!videoReady && (
               <div
@@ -181,11 +232,11 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
               </div>
             )}
 
-            {/* Real video rendered in exact native aspect ratio without cropping */}
+            {/* Real video rendered in exact native aspect ratio without cropping; starts only when visible after intro */}
             <video
+              ref={videoRef}
               key={screenVideoUrl}
               src={screenVideoUrl}
-              autoPlay
               muted
               loop
               playsInline
@@ -196,7 +247,23 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
                   setMeasuredRatio(`${videoWidth} / ${videoHeight}`);
                 }
               }}
-              onLoadedData={() => setVideoReady(true)}
+              onLoadedData={(e) => {
+                setVideoReady(true);
+                if (playWhenVisible && isInView) {
+                  if (!hasStartedRef.current) {
+                    try {
+                      e.currentTarget.currentTime = 0;
+                    } catch {
+                      // ignore
+                    }
+                    hasStartedRef.current = true;
+                  }
+                  e.currentTarget.play().catch(() => {
+                    // ignore
+                  });
+                }
+              }}
+              onPlaying={() => setVideoReady(true)}
               className={`w-full h-full object-contain block transition-opacity duration-300 ${
                 videoReady ? 'opacity-100' : 'opacity-0'
               }`}
