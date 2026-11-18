@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
                   className="inline-flex items-center gap-2 min-h-[40px] md:min-h-0 text-xs text-slate-300 hover:text-white group"
                 >
                   <MessageCircle className="w-4 h-4 text-emerald-400" />
-                  <span>WhatsApp Comercial</span>
+                  <span>WhatsApp · {SITE_CONFIG.brand.whatsappDisplay}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
                 </a>
                 <div className="flex items-center gap-2 text-xs text-slate-400">

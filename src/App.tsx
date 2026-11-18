@@ -12,6 +12,7 @@ import { HowItWorks } from './components/HowItWorks';
 import { Services } from './components/Services';
 import { CommercialCTA } from './components/CommercialCTA';
 import { Footer } from './components/Footer';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ServiceItem } from './data/config';
 
 const QuoteModal = lazy(() =>
@@ -75,6 +76,9 @@ export default function App() {
 
       {/* Footer */}
       <Footer onOpenQuote={handleOpenQuote} />
+
+      {/* Pulsing Floating WhatsApp Button */}
+      {!showIntro && !quoteModalOpen && <FloatingWhatsApp />}
 
       {/* Quote / Brief Modal (Lazy-loaded on demand) */}
       {quoteModalOpen && (

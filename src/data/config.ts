@@ -85,8 +85,8 @@ export const SITE_CONFIG = {
     instagramUrl: 'https://instagram.com/clicaebio',
     email: 'clicae.bio@gmail.com',
     // Número do WhatsApp comercial (código do país + DDD + número)
-    // Deixe vazio ou configure seu número real de atendimento
-    whatsappNumber: '5511999999999',
+    whatsappNumber: '5562982577167',
+    whatsappDisplay: '(62) 98257-7167',
     whatsappDefaultMessage: 'Olá! Conheci o Clicaê pelo site e gostaria de saber mais sobre uma página personalizada para minha marca.',
   },
 
@@ -160,7 +160,7 @@ export const SITE_CONFIG = {
       description: 'Página personalizada para o estabelecimento, reunindo acessos como cardápio digital dinâmico, reservas de mesas, redes sociais, localização e destaques de drinks autorais.',
       highlight: 'Cardápio digital integrado e reservas instantâneas em ambiente sofisticado.',
       image: '/imagem/onze_lounge.jpg',
-      videoUrl: '/video/ONZExCLICAE.mp4',
+      videoUrl: '/video/Onze%20Lounge.MP4',
       // Campo de URL configurável para quando o cliente fornecer o domínio final
       url: '',
       tags: ['Cardápio Digital', 'Reservas', 'Localização Waze/Maps', 'Programação Musical', 'Galeria de Drinks'],

@@ -6,16 +6,105 @@
 import React, { useEffect, useState } from 'react';
 import { SITE_CONFIG } from '../data/config';
 import { PhoneMockup } from './PhoneMockup';
-import { ArrowRight, ChevronDown, Palette, Zap } from 'lucide-react';
+import { ArrowRight, ChevronDown, Layers, Palette, Zap } from 'lucide-react';
 
 interface HeroProps {
   onOpenQuote: () => void;
   onExploreProjects: () => void;
 }
 
+interface HeroShowcaseModel {
+  id: string;
+  name: string;
+  handle: string;
+  category: string;
+  bio: string;
+  avatarText: string;
+  videoUrl: string;
+  videoAspectRatio: string;
+  caption: string;
+  glowRgba: string;
+  theme: {
+    bg: string;
+    cardBg: string;
+    text: string;
+    primary: string;
+    accent: string;
+    border: string;
+  };
+}
+
+const SHOWCASE_MODELS: HeroShowcaseModel[] = [
+  {
+    id: 'tocae',
+    name: 'Tocaê',
+    handle: '@tocae',
+    category: 'Entretenimento & Música',
+    bio: 'Experiência digital exclusiva criada sob medida para conectar fãs e agenda.',
+    avatarText: 'TC',
+    videoUrl: encodeURI('/video/tocaê.MP4'),
+    videoAspectRatio: '1288 / 2404',
+    caption: 'Tocaê — Página de bio personalizada em ação',
+    glowRgba: 'rgba(36,87,255,0.22)',
+    theme: {
+      bg: '#0C0F1D',
+      cardBg: '#161A2E',
+      text: '#F5F6FA',
+      primary: '#2457FF',
+      accent: '#FF684F',
+      border: 'rgba(36, 87, 255, 0.3)',
+    },
+  },
+  {
+    id: 'blackball',
+    name: 'Blackball',
+    handle: '@blackball',
+    category: 'Marca & Entretenimento',
+    bio: 'Visual marcante, links estratégicos e identidade única.',
+    avatarText: 'BB',
+    videoUrl: encodeURI('/video/Blackball.MP4'),
+    videoAspectRatio: '1290 / 2376',
+    caption: 'Blackball — Página de bio personalizada em ação',
+    glowRgba: 'rgba(255,104,79,0.2)',
+    theme: {
+      bg: '#0C0D12',
+      cardBg: '#191B24',
+      text: '#F5F6FA',
+      primary: '#FF684F',
+      accent: '#2457FF',
+      border: 'rgba(255, 104, 79, 0.3)',
+    },
+  },
+  {
+    id: 'onze-lounge',
+    name: 'Onze Lounge',
+    handle: '@onzelounge',
+    category: 'Lounge & Gastrobar',
+    bio: 'Gastronomia sofisticada, coquetelaria autoral e música ao vivo.',
+    avatarText: '11',
+    videoUrl: encodeURI('/video/Onze Lounge.MP4'),
+    videoAspectRatio: '1290 / 2506',
+    caption: 'Onze Lounge — Página de bio personalizada em ação',
+    glowRgba: 'rgba(229,169,60,0.2)',
+    theme: {
+      bg: '#0F111A',
+      cardBg: '#1A1D2E',
+      text: '#F5F6FA',
+      primary: '#E5A93C',
+      accent: '#FF684F',
+      border: 'rgba(229, 169, 60, 0.25)',
+    },
+  },
+];
+
 export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) => {
   const [percentCount, setPercentCount] = useState(100);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const [activeModelId, setActiveModelId] = useState<string>('tocae');
+  const [showModelSelector, setShowModelSelector] = useState<boolean>(false);
+
+  const activeModel =
+    SHOWCASE_MODELS.find((m) => m.id === activeModelId) || SHOWCASE_MODELS[0];
 
   useEffect(() => {
     const prefersReduced =
@@ -187,7 +276,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
             </div>
           </div>
 
-          {/* Right Column: Single Prominent Onze Lounge Smartphone Showcase */}
+          {/* Right Column: Interactive Model Showcase Smartphone (Default: Tocaê) */}
           <div
             onMouseMove={handleStageMouseMove}
             onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
@@ -195,23 +284,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
           >
             {/* Ambient Lighting Glow Behind the Phone (Zero blur filter) */}
             <div
-              className="absolute w-[300px] sm:w-[420px] h-[460px] sm:h-[560px] rounded-[60px] pointer-events-none"
+              className="absolute w-[300px] sm:w-[420px] h-[460px] sm:h-[560px] rounded-[60px] pointer-events-none transition-all duration-500"
               style={{
-                background:
-                  'radial-gradient(circle at 50% 45%, rgba(229,169,60,0.18) 0%, rgba(36,87,255,0.14) 45%, transparent 75%)',
+                background: `radial-gradient(circle at 50% 45%, ${activeModel.glowRgba} 0%, rgba(36,87,255,0.12) 45%, transparent 75%)`,
               }}
             />
 
-            {/* Smartphone Container (Visual Only with float & interactive 3D tilt on desktop) */}
+            {/* Smartphone Container (Matches exact real video aspect ratio) */}
             <div
-              className="relative w-full max-w-[270px] sm:max-w-[335px] lg:max-w-[360px] flex flex-col items-center"
+              className="relative w-full max-w-[260px] sm:max-w-[295px] lg:max-w-[310px] flex flex-col items-center"
               style={{
                 transform: `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
                 transition: 'transform 220ms ease-out',
               }}
             >
               {/* Floating Orbit Card Top-Left */}
-              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -left-10 top-16 z-30 animate-float-counter pointer-events-none">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -left-14 top-16 z-30 animate-float-counter pointer-events-none">
                 <span className="p-1.5 rounded-lg bg-[#2457FF]/20 text-[#2457FF]">
                   <Palette className="w-3.5 h-3.5" />
                 </span>
@@ -222,7 +310,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
               </div>
 
               {/* Floating Orbit Card Bottom-Right */}
-              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -right-8 bottom-24 z-30 animate-float-slow pointer-events-none">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -right-12 bottom-32 z-30 animate-float-slow pointer-events-none">
                 <span className="p-1.5 rounded-lg bg-[#FF684F]/20 text-[#FF684F]">
                   <Zap className="w-3.5 h-3.5" />
                 </span>
@@ -235,30 +323,78 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
               <div className="w-full animate-float-slow">
                 <PhoneMockup
                   compact
-                  brandName="Onze Lounge"
-                  handle="@onzelounge"
-                  category="Lounge & Gastrobar"
-                  bio="Gastronomia sofisticada, coquetelaria autoral e música ao vivo."
-                  theme={{
-                    bg: '#0F111A',
-                    cardBg: '#1A1D2E',
-                    text: '#F5F6FA',
-                    primary: '#E5A93C',
-                    accent: '#FF684F',
-                    border: 'rgba(229, 169, 60, 0.25)',
-                  }}
+                  brandName={activeModel.name}
+                  handle={activeModel.handle}
+                  category={activeModel.category}
+                  bio={activeModel.bio}
+                  theme={activeModel.theme}
                   actions={[]}
-                  avatarText="11"
-                  screenVideoUrl="/video/ONZExCLICAE.mp4"
-                  videoTitle="Onze Lounge · Bio Personalizada"
+                  avatarText={activeModel.avatarText}
+                  screenVideoUrl={activeModel.videoUrl}
+                  videoAspectRatio={activeModel.videoAspectRatio}
                   className="w-full"
                 />
               </div>
 
               {/* Sleek Subtitle Caption Below Phone */}
               <div className="mt-4 sm:mt-5 flex items-center gap-2 text-xs text-slate-300 font-medium text-center">
-                <span className="w-2 h-2 rounded-full bg-[#E5A93C] animate-pulse shrink-0" />
-                <span>Onze Lounge — Página de bio personalizada em ação</span>
+                <span
+                  className="w-2 h-2 rounded-full animate-pulse shrink-0 transition-colors"
+                  style={{ backgroundColor: activeModel.theme.primary }}
+                />
+                <span>{activeModel.caption}</span>
+              </div>
+
+              {/* "Ver outros modelos" Button + Selector Drawer */}
+              <div className="mt-3.5 w-full flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={() => setShowModelSelector((prev) => !prev)}
+                  aria-expanded={showModelSelector}
+                  className="min-h-[42px] inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/8 hover:bg-white/14 border border-white/15 hover:border-[#2457FF]/50 text-xs font-semibold text-white shadow-lg transition-all duration-200 active:scale-95 cursor-pointer"
+                >
+                  <Layers className="w-3.5 h-3.5 text-[#2457FF]" />
+                  <span>Ver outros modelos</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-slate-300 transition-transform duration-200 ${
+                      showModelSelector ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {showModelSelector && (
+                  <div className="mt-3 w-full max-w-[330px] p-2 rounded-2xl bg-[#121526]/95 border border-white/15 shadow-2xl animate-pop-in">
+                    <span className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400 text-center mb-2">
+                      Escolha um modelo para visualizar
+                    </span>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {SHOWCASE_MODELS.map((model) => {
+                        const isSelected = model.id === activeModel.id;
+                        return (
+                          <button
+                            key={model.id}
+                            type="button"
+                            onClick={() => setActiveModelId(model.id)}
+                            aria-pressed={isSelected}
+                            className={`min-h-[42px] px-2 py-2 rounded-xl text-[11px] font-bold transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 ${
+                              isSelected
+                                ? 'bg-[#2457FF] text-white shadow-md shadow-[#2457FF]/30 border border-[#2457FF]'
+                                : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10'
+                            }`}
+                          >
+                            <span
+                              className="w-2 h-2 rounded-full shrink-0"
+                              style={{
+                                backgroundColor: isSelected ? '#FFFFFF' : model.theme.primary,
+                              }}
+                            />
+                            <span className="truncate max-w-full">{model.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

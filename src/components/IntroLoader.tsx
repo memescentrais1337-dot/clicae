@@ -36,16 +36,16 @@ export const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete }) => {
 
     const t1 = window.setTimeout(() => {
       if (!skippedRef.current) setPhase('clicking');
-    }, 820);
+    }, 1850);
     const t2 = window.setTimeout(() => {
       if (!skippedRef.current) setPhase('burst');
-    }, 1020);
+    }, 2200);
     const t3 = window.setTimeout(() => {
       if (!skippedRef.current) setPhase('exit');
-    }, 1460);
+    }, 3350);
     const t4 = window.setTimeout(() => {
       if (!skippedRef.current) onComplete();
-    }, 1940);
+    }, 4000);
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
@@ -74,7 +74,7 @@ export const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete }) => {
     <div
       aria-hidden={isExiting}
       onClick={handleSkip}
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0B0D17] select-none transition-all duration-500 ease-out ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0B0D17] select-none transition-all duration-700 ease-out ${
         isExiting
           ? 'opacity-0 scale-105 pointer-events-none'
           : 'opacity-100 scale-100 cursor-pointer'

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MessageCircle,
   Menu as MenuIcon,
@@ -52,6 +52,7 @@ interface PhoneMockupProps {
     badge?: string;
   };
   screenVideoUrl?: string;
+  videoAspectRatio?: string;
   videoTitle?: string;
   compact?: boolean;
   className?: string;
@@ -69,12 +70,19 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
   avatarText,
   mediaBanner,
   screenVideoUrl,
-  videoTitle,
+  videoAspectRatio,
+  videoTitle: _videoTitle,
   compact = false,
   className = '',
   onActionClick,
 }) => {
   const [videoReady, setVideoReady] = useState(false);
+  const [measuredRatio, setMeasuredRatio] = useState<string | undefined>(videoAspectRatio);
+
+  useEffect(() => {
+    setVideoReady(false);
+    setMeasuredRatio(videoAspectRatio);
+  }, [screenVideoUrl, videoAspectRatio]);
 
   const getIcon = (name: PhoneAction['iconName']) => {
     const iconClass = 'w-4 h-4 shrink-0';
@@ -117,36 +125,43 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
 
       {/* Screen Frame */}
       <div
-        className={`relative w-full rounded-[34px] overflow-hidden flex flex-col transition-colors duration-500 select-none ${
-          compact ? 'min-h-[440px] sm:min-h-[480px]' : 'min-h-[465px] sm:min-h-[580px]'
+        className={`relative w-full rounded-[32px] overflow-hidden flex flex-col transition-colors duration-500 select-none ${
+          screenVideoUrl
+            ? ''
+            : compact
+              ? 'min-h-[440px] sm:min-h-[480px]'
+              : 'min-h-[465px] sm:min-h-[580px]'
         }`}
         style={{
           backgroundColor: theme.bg,
           color: theme.text,
+          ...(screenVideoUrl ? { aspectRatio: measuredRatio || '9 / 17' } : {}),
         }}
       >
         {/* Subtle glass reflection gradient */}
-        <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.08]" />
+        <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.05]" />
 
-        {/* Status Bar */}
-        <div className="relative z-20 flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-medium text-white/80">
-          <span>09:41</span>
-          {/* Dynamic Island */}
-          <div className="w-20 h-4 bg-black rounded-full flex items-center justify-end px-2 gap-1.5 shadow-inner">
-            <div className="w-2 h-2 rounded-full bg-[#1e2338]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#2457FF]/80 animate-pulse" />
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-bold">5G</span>
-            <div className="w-4 h-2 border border-white/60 rounded-xs p-0.5 flex items-center">
-              <div className="w-full h-full bg-white/80 rounded-2xs" />
+        {/* Status Bar (only for interactive UI mockup mode, never blocking real video) */}
+        {!screenVideoUrl && (
+          <div className="relative z-20 flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-medium text-white/80">
+            <span>09:41</span>
+            {/* Dynamic Island */}
+            <div className="w-20 h-4 bg-black rounded-full flex items-center justify-end px-2 gap-1.5 shadow-inner">
+              <div className="w-2 h-2 rounded-full bg-[#1e2338]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#2457FF]/80 animate-pulse" />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-bold">5G</span>
+              <div className="w-4 h-2 border border-white/60 rounded-xs p-0.5 flex items-center">
+                <div className="w-full h-full bg-white/80 rounded-2xs" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Full-Screen Video Display Mode */}
+        {/* Full-Frame Uncropped Video Display Mode (No captions or badges over video) */}
         {screenVideoUrl ? (
-          <div className="relative flex-1 w-full h-full overflow-hidden flex flex-col justify-between z-10 pointer-events-none">
+          <div className="relative w-full h-full overflow-hidden z-10 pointer-events-none">
             {/* Instant lightweight visual fallback while video metadata/frames stream on mobile */}
             {!videoReady && (
               <div
@@ -166,37 +181,26 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
               </div>
             )}
 
-            {/* The Video in Infinite Loop (metadata preload keeps initial load snappy on mobile) */}
+            {/* Real video rendered in exact native aspect ratio without cropping */}
             <video
+              key={screenVideoUrl}
               src={screenVideoUrl}
               autoPlay
               muted
               loop
               playsInline
               preload="metadata"
+              onLoadedMetadata={(e) => {
+                const { videoWidth, videoHeight } = e.currentTarget;
+                if (videoWidth > 0 && videoHeight > 0) {
+                  setMeasuredRatio(`${videoWidth} / ${videoHeight}`);
+                }
+              }}
               onLoadedData={() => setVideoReady(true)}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+              className={`w-full h-full object-contain block transition-opacity duration-300 ${
                 videoReady ? 'opacity-100' : 'opacity-0'
               }`}
             />
-
-            {/* Subtle scrim at the top and bottom */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-
-            {/* Top mini indicator */}
-            <div className="relative z-20 pt-2 px-4 flex justify-between items-center">
-              <span className="text-[9px] font-semibold text-white/90 bg-black/75 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-white/10">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E5A93C]" />
-                <span>Onze Lounge</span>
-              </span>
-            </div>
-
-            {/* Bottom floating badge */}
-            <div className="relative z-20 mt-auto pb-4 px-4 flex flex-col items-center gap-1.5">
-              <div className="px-3.5 py-1.5 rounded-2xl bg-black/80 border border-white/15 text-[11px] font-bold text-white shadow-xl text-center">
-                <span>{videoTitle || `${brandName} — Bio Personalizada`}</span>
-              </div>
-            </div>
           </div>
         ) : (
           /* Standard Scrollable Screen Content */
@@ -384,10 +388,12 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
         </div>
         )}
 
-        {/* Home Indicator Bar */}
-        <div className="relative z-20 pb-2 pt-1 flex justify-center">
-          <div className="w-28 h-1 bg-white/30 rounded-full" />
-        </div>
+        {/* Home Indicator Bar (only for interactive UI mockup mode) */}
+        {!screenVideoUrl && (
+          <div className="relative z-20 pb-2 pt-1 flex justify-center">
+            <div className="w-28 h-1 bg-white/30 rounded-full" />
+          </div>
+        )}
       </div>
     </div>
   );
