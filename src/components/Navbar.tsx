@@ -13,12 +13,17 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(maxScroll > 0 ? Math.min(1, Math.max(0, y / maxScroll)) : 0);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -37,7 +42,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
     { label: 'Antes vs Depois', hint: 'Por que somos diferentes', href: '#o-problema' },
     { label: 'Como Funciona', hint: '3 passos simples', href: '#como-funciona' },
     { label: 'Serviços', hint: 'Cardápios, portfólios e bios', href: '#servicos' },
-    { label: 'Para Quem É', hint: 'Segmentos atendidos', href: '#para-quem' },
     { label: 'Contato', hint: 'Fale com a equipe', href: '#contato' },
   ];
 
@@ -45,29 +49,40 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
     if (onOpenQuote) {
       onOpenQuote();
     } else {
-      window.open(getWhatsAppUrl(), '_blank', 'noopener,noreferrer');
+      const link = document.createElement('a');
+      link.href = getWhatsAppUrl();
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
     }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
         scrolled || mobileMenuOpen
-          ? 'bg-[#0B0D17]/92 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/40 py-2.5 sm:py-3.5'
+          ? 'bg-[#0B0D17]/95 sm:bg-[#0B0D17]/90 sm:backdrop-blur-md border-b border-white/10 shadow-xl shadow-black/40 py-2.5 sm:py-3.5'
           : 'bg-transparent py-3.5 sm:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 sm:gap-8">
-          {/* Zone 1: Brand Wordmark */}
+          {/* Zone 1: Brand Wordmark & Logo */}
           <a
             href="#"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-2 text-xl sm:text-2xl font-black tracking-tight text-white font-display whitespace-nowrap shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2457FF] rounded-lg"
+            className="flex items-center gap-2.5 text-xl sm:text-2xl font-black tracking-tight text-white font-display whitespace-nowrap shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2457FF] rounded-lg"
           >
+            <img
+              src={SITE_CONFIG.brand.logoUrl}
+              alt="Logo Clicaê"
+              width={36}
+              height={36}
+              decoding="async"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover ring-1 ring-white/20 shadow-md shrink-0 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+            />
             <span className="relative flex items-center">
               CLICA<span className="text-[#FF684F]">Ê</span>
-              <span className="inline-block w-2 h-2 rounded-full bg-[#2457FF] ml-1.5 transition-transform duration-300 group-hover:scale-125" />
             </span>
           </a>
 
@@ -110,22 +125,34 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
         </div>
       </div>
 
+      {/* Scroll Reading Progress Bar */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#2457FF] via-[#A855F7] to-[#FF684F]"
+        style={{
+          transform: `scaleX(${scrollProgress})`,
+          opacity: scrolled ? 0.9 : 0,
+          transition: 'opacity 200ms ease',
+        }}
+      />
+
       {/* Mobile Drawer + Backdrop */}
       {mobileMenuOpen && (
         <>
           <div
             onClick={() => setMobileMenuOpen(false)}
-            className="lg:hidden fixed inset-0 top-[64px] bg-black/60 backdrop-blur-xs z-40"
+            className="lg:hidden fixed inset-0 top-[64px] bg-black/70 z-40"
             aria-hidden="true"
           />
-          <div className="lg:hidden fixed inset-x-0 top-[64px] z-50 bg-[#0E101D]/98 backdrop-blur-2xl border-b border-white/10 px-4 py-5 shadow-2xl max-h-[calc(100dvh-64px)] overflow-y-auto">
+          <div className="animate-step-in lg:hidden fixed inset-x-0 top-[64px] z-50 bg-[#0E101D] border-b border-white/10 px-4 py-5 shadow-2xl max-h-[calc(100dvh-64px)] overflow-y-auto">
             <nav className="flex flex-col divide-y divide-white/5">
-              {navLinks.map((link) => (
+              {navLinks.map((link, i) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-3.5 px-2 min-h-[48px] text-slate-100 hover:text-white active:bg-white/5 rounded-xl transition-colors"
+                  style={{ animationDelay: `${i * 40}ms` }}
+                  className="animate-fade-up flex items-center justify-between py-3.5 px-2 min-h-[48px] text-slate-100 hover:text-white active:bg-white/5 rounded-xl transition-colors"
                 >
                   <div>
                     <span className="block text-base font-semibold font-display">
@@ -146,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
                   setMobileMenuOpen(false);
                   handleCtaClick();
                 }}
-                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3 px-4 text-sm font-bold text-white bg-gradient-to-r from-[#2457FF] to-[#FF684F] rounded-xl shadow-lg shadow-[#2457FF]/30 active:scale-98"
+                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3 px-4 text-sm font-bold text-white bg-gradient-to-r from-[#2457FF] to-[#FF684F] rounded-xl shadow-lg shadow-[#2457FF]/30 active:scale-95 transition-transform"
               >
                 <span>Quero minha bio personalizada</span>
                 <ArrowUpRight className="w-4 h-4" />

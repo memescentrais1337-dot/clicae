@@ -22,10 +22,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
           <div className="md:col-span-5 flex flex-col items-start">
             <a
               href="#"
-              className="text-2xl font-black tracking-tight text-white font-display mb-3 group"
+              className="inline-flex items-center gap-3 text-2xl font-black tracking-tight text-white font-display mb-3 group"
             >
+              <img
+                src={SITE_CONFIG.brand.logoUrl}
+                alt="Logo Clicaê"
+                width={40}
+                height={40}
+                loading="lazy"
+                decoding="async"
+                className="w-10 h-10 rounded-full object-cover ring-1 ring-white/20 shadow-lg shrink-0"
+              />
               <span>CLICA<span className="text-[#FF684F]">Ê</span></span>
-              <span className="inline-block w-2 h-2 rounded-full bg-[#2457FF] ml-1.5" />
             </a>
 
             <p className="text-sm font-semibold text-slate-300 mb-2">
@@ -83,11 +91,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
               <li>
                 <a href="#servicos" className="inline-flex items-center min-h-[40px] md:min-h-0 hover:text-white transition-colors">
                   Serviços
-                </a>
-              </li>
-              <li>
-                <a href="#para-quem" className="inline-flex items-center min-h-[40px] md:min-h-0 hover:text-white transition-colors">
-                  Para Quem É
                 </a>
               </li>
               <li>

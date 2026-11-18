@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { getWhatsAppUrl, ServiceItem } from '../data/config';
-import { X, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { SITE_CONFIG, getWhatsAppUrl, ServiceItem } from '../data/config';
+import { X, MessageCircle, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface QuoteModalProps {
@@ -111,27 +111,38 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="quote-modal-title"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/80 sm:backdrop-blur-md animate-in fade-in duration-200"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-xl bg-[#121424] border-t sm:border border-white/15 rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-8 max-h-[92dvh] overflow-y-auto sm:my-8"
+        className="animate-sheet-up relative w-full max-w-xl bg-[#121424] border-t sm:border border-white/15 rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-8 max-h-[92dvh] overflow-y-auto sm:my-8"
       >
         {/* Mobile sheet drag handle */}
         <div className="sm:hidden flex justify-center mb-3">
           <span className="w-10 h-1 rounded-full bg-white/20" aria-hidden="true" />
         </div>
 
-        {/* Decorative corner glows */}
-        <div className="pointer-events-none absolute -top-24 -right-24 w-48 h-48 bg-[#2457FF]/20 rounded-full blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 w-48 h-48 bg-[#FF684F]/20 rounded-full blur-3xl" />
+        {/* Lightweight decorative radial accents */}
+        <div
+          className="pointer-events-none absolute -top-24 -right-24 w-48 h-48 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(36,87,255,0.22) 0%, transparent 70%)' }}
+        />
+        <div
+          className="pointer-events-none absolute -bottom-24 -left-24 w-48 h-48 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,104,79,0.2) 0%, transparent 70%)' }}
+        />
 
         {/* Modal Header */}
         <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5 sm:mb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-[#2457FF]/20 text-[#2457FF]">
-              <Sparkles className="w-4 h-4 text-[#2457FF]" />
-            </div>
+          <div className="flex items-center gap-3">
+            <img
+              src={SITE_CONFIG.brand.logoUrl}
+              alt="Logo Clicaê"
+              width={40}
+              height={40}
+              decoding="async"
+              className="w-10 h-10 rounded-full object-cover ring-1 ring-white/20 shadow-md shrink-0"
+            />
             <div>
               <h3 id="quote-modal-title" className="text-lg font-bold font-display text-white">
                 Seu Projeto Exclusivo

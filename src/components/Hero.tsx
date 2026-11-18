@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SITE_CONFIG } from '../data/config';
 import { PhoneMockup } from './PhoneMockup';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, Palette, Zap } from 'lucide-react';
 
 interface HeroProps {
   onOpenQuote: () => void;
@@ -14,20 +14,65 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) => {
+  const [percentCount, setPercentCount] = useState(100);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    let rafId = 0;
+    const duration = 900;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setPercentCount(Math.round(40 + eased * 60));
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      }
+    };
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const handleStageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({
+      rx: Math.round(-ny * 9 * 10) / 10,
+      ry: Math.round(nx * 11 * 10) / 10,
+    });
+  };
+
   const quickNavItems = [
     { label: 'Antes vs Depois', href: '#o-problema' },
     { label: 'Como funciona', href: '#como-funciona' },
     { label: 'Serviços', href: '#servicos' },
-    { label: 'Para quem é', href: '#para-quem' },
+    { label: 'Contato', href: '#contato' },
   ];
 
   return (
     <section className="relative lg:min-h-[90vh] pt-20 pb-12 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 overflow-hidden flex items-center">
-      {/* Background Ambient Lighting & Neon Aura */}
+      {/* Background Ambient Lighting & Neon Aura (GPU-light radial gradients) */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/4 w-[420px] sm:w-[500px] h-[420px] sm:h-[500px] bg-[#2457FF]/15 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 -right-24 w-[380px] sm:w-[450px] h-[380px] sm:h-[450px] bg-[#FF684F]/12 rounded-full blur-[140px]" />
-        <div className="absolute top-1/2 right-1/4 w-[320px] sm:w-[400px] h-[320px] sm:h-[400px] bg-[#E5A93C]/10 rounded-full blur-[130px]" />
+        <div
+          className="absolute -top-32 left-1/4 w-[420px] sm:w-[560px] h-[420px] sm:h-[560px] rounded-full animate-float-slow"
+          style={{ background: 'radial-gradient(circle, rgba(36,87,255,0.16) 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute top-1/3 -right-24 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full animate-float-counter"
+          style={{ background: 'radial-gradient(circle, rgba(255,104,79,0.12) 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute top-1/2 right-1/4 w-[320px] sm:w-[440px] h-[320px] sm:h-[440px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(229,169,60,0.1) 0%, transparent 70%)' }}
+        />
         <div className="absolute inset-0 bg-radial from-transparent via-[#0B0D17]/80 to-[#0B0D17]" />
 
         <div
@@ -44,34 +89,50 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
           {/* Left Column: Value Proposition & Copy */}
           <div className="lg:col-span-6 flex flex-col items-start text-left">
             {/* Tag / Micro Kicker */}
-            <div className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold tracking-wide uppercase text-[#A5B4FC] mb-3 sm:mb-4">
-              <span className="text-[#2457FF] font-bold">●</span>
+            <div
+              className="animate-fade-up inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold tracking-wide uppercase text-[#A5B4FC] mb-3 sm:mb-4"
+              style={{ animationDelay: '40ms' }}
+            >
+              <span className="text-[#2457FF] font-bold animate-pulse">●</span>
               <span>A evolução do link na bio</span>
               <span className="text-white/30">/</span>
               <span className="text-[#FF684F]">Muito mais que um link</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-[2rem] sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white leading-[1.1] text-balance mb-4 sm:mb-6">
+            <h1
+              className="animate-fade-up text-[2rem] sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white leading-[1.1] text-balance mb-4 sm:mb-6"
+              style={{ animationDelay: '100ms' }}
+            >
               Sua marca é única.{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2457FF] via-[#A855F7] to-[#FF684F]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2457FF] via-[#A855F7] to-[#FF684F] animate-gradient-flow">
                 Sua bio também deveria ser.
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-lg text-slate-300 leading-relaxed max-w-xl mb-6 sm:mb-8 font-normal">
+            <p
+              className="animate-fade-up text-sm sm:text-lg text-slate-300 leading-relaxed max-w-xl mb-6 sm:mb-8 font-normal"
+              style={{ animationDelay: '160ms' }}
+            >
               {SITE_CONFIG.hero.subtitle}
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-6 sm:mb-10">
+            <div
+              className="animate-fade-up flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-6 sm:mb-10"
+              style={{ animationDelay: '220ms' }}
+            >
               <button
                 onClick={onOpenQuote}
-                className="min-h-[48px] inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 text-sm font-bold text-white bg-gradient-to-r from-[#2457FF] via-[#1F4EF5] to-[#FF684F] hover:opacity-95 rounded-2xl shadow-xl shadow-[#2457FF]/30 hover:shadow-[#2457FF]/50 transition-all duration-200 active:scale-95 cursor-pointer"
+                className="group relative overflow-hidden min-h-[48px] inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 text-sm font-bold text-white bg-gradient-to-r from-[#2457FF] via-[#6D4AFF] to-[#FF684F] animate-gradient-flow hover:opacity-95 rounded-2xl shadow-xl shadow-[#2457FF]/30 hover:shadow-[#2457FF]/50 transition-all duration-200 active:scale-95 cursor-pointer"
               >
-                <span>{SITE_CONFIG.hero.ctaPrimary}</span>
-                <ArrowRight className="w-4 h-4 shrink-0" />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 animate-shimmer-sweep"
+                />
+                <span className="relative">{SITE_CONFIG.hero.ctaPrimary}</span>
+                <ArrowRight className="relative w-4 h-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
               </button>
 
               <button
@@ -79,12 +140,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
                 className="min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 <span>{SITE_CONFIG.hero.ctaSecondary}</span>
-                <ChevronDown className="w-4 h-4 text-slate-400" />
+                <ChevronDown className="w-4 h-4 text-slate-400 animate-bounce" style={{ animationDuration: '2.4s' }} />
               </button>
             </div>
 
             {/* Mobile Quick Jump Strip (Easy 1-tap navigation right from the first screen) */}
-            <div className="lg:hidden w-full mb-6">
+            <div
+              className="animate-fade-up lg:hidden w-full mb-6"
+              style={{ animationDelay: '260ms' }}
+            >
               <span className="text-[11px] font-medium text-slate-400 block mb-2">
                 Navegue rápido:
               </span>
@@ -93,7 +157,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
                   <a
                     key={item.href}
                     href={item.href}
-                    className="px-3.5 py-2 text-xs font-medium text-slate-200 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl whitespace-nowrap shrink-0 transition-colors"
+                    className="px-3.5 py-2 text-xs font-medium text-slate-200 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl whitespace-nowrap shrink-0 transition-colors active:scale-95"
                   >
                     {item.label}
                   </a>
@@ -102,9 +166,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
             </div>
 
             {/* Value Indicators */}
-            <div className="pt-5 sm:pt-6 border-t border-white/10 w-full grid grid-cols-3 gap-3 sm:gap-4">
+            <div
+              className="animate-fade-up pt-5 sm:pt-6 border-t border-white/10 w-full grid grid-cols-3 gap-3 sm:gap-4"
+              style={{ animationDelay: '300ms' }}
+            >
               <div>
-                <span className="block text-lg sm:text-2xl font-bold font-display text-white">100%</span>
+                <span className="block text-lg sm:text-2xl font-bold font-display text-white tabular-nums">
+                  {percentCount}%
+                </span>
                 <span className="text-xs text-slate-400">Personalizado</span>
               </div>
               <div>
@@ -119,33 +188,72 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuote, onExploreProjects }) =>
           </div>
 
           {/* Right Column: Single Prominent Onze Lounge Smartphone Showcase */}
-          <div className="lg:col-span-6 relative flex flex-col items-center justify-center pt-2 lg:pt-0 lg:min-h-[540px]">
-            {/* Ambient Lighting Glow Behind the Phone */}
-            <div className="absolute w-[280px] sm:w-[360px] h-[440px] sm:h-[520px] bg-gradient-to-b from-[#2457FF]/25 via-[#E5A93C]/20 to-[#FF684F]/15 rounded-[60px] blur-3xl pointer-events-none" />
+          <div
+            onMouseMove={handleStageMouseMove}
+            onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
+            className="lg:col-span-6 relative flex flex-col items-center justify-center pt-2 lg:pt-0 lg:min-h-[540px]"
+          >
+            {/* Ambient Lighting Glow Behind the Phone (Zero blur filter) */}
+            <div
+              className="absolute w-[300px] sm:w-[420px] h-[460px] sm:h-[560px] rounded-[60px] pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(circle at 50% 45%, rgba(229,169,60,0.18) 0%, rgba(36,87,255,0.14) 45%, transparent 75%)',
+              }}
+            />
 
-            {/* Smartphone Container (Visual Only) */}
-            <div className="relative w-full max-w-[270px] sm:max-w-[335px] lg:max-w-[360px] flex flex-col items-center">
-              <PhoneMockup
-                compact
-                brandName="Onze Lounge"
-                handle="@onzelounge"
-                category="Lounge & Gastrobar"
-                bio="Gastronomia sofisticada, coquetelaria autoral e música ao vivo."
-                theme={{
-                  bg: '#0F111A',
-                  cardBg: '#1A1D2E',
-                  text: '#F5F6FA',
-                  primary: '#E5A93C',
-                  accent: '#FF684F',
-                  border: 'rgba(229, 169, 60, 0.25)',
-                }}
-                actions={[]}
-                avatarUrl="/imagem/onze_lounge.jpg"
-                avatarText="11"
-                screenVideoUrl="/video/ONZExCLICAE.mp4"
-                videoTitle="Onze Lounge · Bio Personalizada"
-                className="w-full transform hover:scale-[1.01] transition-transform duration-300"
-              />
+            {/* Smartphone Container (Visual Only with float & interactive 3D tilt on desktop) */}
+            <div
+              className="relative w-full max-w-[270px] sm:max-w-[335px] lg:max-w-[360px] flex flex-col items-center"
+              style={{
+                transform: `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+                transition: 'transform 220ms ease-out',
+              }}
+            >
+              {/* Floating Orbit Card Top-Left */}
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -left-10 top-16 z-30 animate-float-counter pointer-events-none">
+                <span className="p-1.5 rounded-lg bg-[#2457FF]/20 text-[#2457FF]">
+                  <Palette className="w-3.5 h-3.5" />
+                </span>
+                <div className="text-left leading-tight">
+                  <span className="block text-[11px] font-bold text-white">Design Autoral</span>
+                  <span className="block text-[10px] text-slate-400">Identidade exclusiva</span>
+                </div>
+              </div>
+
+              {/* Floating Orbit Card Bottom-Right */}
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#141729]/95 border border-white/15 shadow-xl absolute -right-8 bottom-24 z-30 animate-float-slow pointer-events-none">
+                <span className="p-1.5 rounded-lg bg-[#FF684F]/20 text-[#FF684F]">
+                  <Zap className="w-3.5 h-3.5" />
+                </span>
+                <div className="text-left leading-tight">
+                  <span className="block text-[11px] font-bold text-white">Experiência Real</span>
+                  <span className="block text-[10px] text-slate-400">Links em 1 toque</span>
+                </div>
+              </div>
+
+              <div className="w-full animate-float-slow">
+                <PhoneMockup
+                  compact
+                  brandName="Onze Lounge"
+                  handle="@onzelounge"
+                  category="Lounge & Gastrobar"
+                  bio="Gastronomia sofisticada, coquetelaria autoral e música ao vivo."
+                  theme={{
+                    bg: '#0F111A',
+                    cardBg: '#1A1D2E',
+                    text: '#F5F6FA',
+                    primary: '#E5A93C',
+                    accent: '#FF684F',
+                    border: 'rgba(229, 169, 60, 0.25)',
+                  }}
+                  actions={[]}
+                  avatarText="11"
+                  screenVideoUrl="/video/ONZExCLICAE.mp4"
+                  videoTitle="Onze Lounge · Bio Personalizada"
+                  className="w-full"
+                />
+              </div>
 
               {/* Sleek Subtitle Caption Below Phone */}
               <div className="mt-4 sm:mt-5 flex items-center gap-2 text-xs text-slate-300 font-medium text-center">

@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { SITE_CONFIG } from '../data/config';
+import { Reveal } from './Reveal';
 import { Palette, Smartphone, Share2, CheckCircle2 } from 'lucide-react';
 
 export const HowItWorks: React.FC = () => {
@@ -27,16 +28,18 @@ export const HowItWorks: React.FC = () => {
       previewGraphic: (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#121422] border border-white/10 space-y-2.5">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#2457FF]" />
-            <span className="w-3 h-3 rounded-full bg-[#FF684F]" />
-            <span className="w-3 h-3 rounded-full bg-[#F5F6FA]" />
+            <span className="w-3 h-3 rounded-full bg-[#2457FF] animate-pulse" />
+            <span className="w-3 h-3 rounded-full bg-[#FF684F] animate-pulse" style={{ animationDelay: '250ms' }} />
+            <span className="w-3 h-3 rounded-full bg-[#F5F6FA] animate-pulse" style={{ animationDelay: '500ms' }} />
             <span className="text-xs text-slate-400 font-mono ml-2">Cores da sua marca</span>
           </div>
-          <div className="h-9 rounded-lg bg-white/5 border border-white/5 flex items-center px-3 text-xs text-slate-300">
-            Logotipo & Tipografia Identificada
+          <div className="h-9 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between px-3 text-xs text-slate-300">
+            <span>Logotipo & Tipografia Identificada</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           </div>
-          <div className="h-9 rounded-lg bg-white/5 border border-white/5 flex items-center px-3 text-xs text-[#A5B4FC]">
-            ✓ WhatsApp, Cardápio, Reservas e Maps
+          <div className="relative overflow-hidden h-9 rounded-lg bg-white/5 border border-white/5 flex items-center px-3 text-xs text-[#A5B4FC]">
+            <span className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[#2457FF]/20 to-transparent animate-shimmer-sweep" />
+            <span className="relative">✓ WhatsApp, Cardápio, Reservas e Maps</span>
           </div>
         </div>
       ),
@@ -59,13 +62,14 @@ export const HowItWorks: React.FC = () => {
             <span className="font-semibold text-white">Layout Exclusivo</span>
             <span className="text-[11px] text-[#A5B4FC] font-semibold">100% Artesanal</span>
           </div>
-          <div className="p-2.5 rounded-xl bg-gradient-to-r from-[#2457FF] to-[#1E40AF] text-white text-xs font-semibold flex justify-between">
-            <span>Botão Personalizado</span>
-            <span>→</span>
+          <div className="relative overflow-hidden p-2.5 rounded-xl bg-gradient-to-r from-[#2457FF] to-[#1E40AF] text-white text-xs font-semibold flex justify-between items-center">
+            <span className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 animate-shimmer-sweep" />
+            <span className="relative">Botão Personalizado</span>
+            <span className="relative animate-pulse">→</span>
           </div>
           <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 flex justify-between">
             <span>Galeria & Cardápio Integrados</span>
-            <span>★</span>
+            <span className="text-[#E5A93C]">★</span>
           </div>
         </div>
       ),
@@ -85,7 +89,10 @@ export const HowItWorks: React.FC = () => {
       previewGraphic: (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#121422] border border-white/10 space-y-2.5">
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div className="relative shrink-0">
+              <span className="absolute inset-0 rounded-full bg-emerald-400/40 animate-ping" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 relative" />
+            </div>
             <div className="text-xs">
               <span className="font-bold text-white block">Página Ativa e Online</span>
               <span className="text-emerald-300/80 font-mono text-[11px]">clicae.com.br/suamarca</span>
@@ -93,7 +100,7 @@ export const HowItWorks: React.FC = () => {
           </div>
           <div className="flex items-center justify-between text-xs text-slate-400 px-1 pt-1">
             <span>Bio do Instagram Atualizada</span>
-            <span className="text-[#FF684F] font-semibold">Pronta para converter</span>
+            <span className="text-[#FF684F] font-semibold animate-pulse">Pronta para converter</span>
           </div>
         </div>
       ),
@@ -109,7 +116,7 @@ export const HowItWorks: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <Reveal className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-slate-400 mb-3">
             <span>Processo Criativo</span>
             <span className="text-[#2457FF]">·</span>
@@ -123,10 +130,10 @@ export const HowItWorks: React.FC = () => {
           <p className="text-sm sm:text-lg text-slate-300 leading-relaxed font-normal">
             {SITE_CONFIG.howItWorks.subtitle}
           </p>
-        </div>
+        </Reveal>
 
-        {/* MOBILE VIEW: Unified Stepper Tabs + Active Card (No scrolling past 3 stacked cards) */}
-        <div className="lg:hidden max-w-xl mx-auto">
+        {/* MOBILE VIEW: Unified Stepper Tabs + Active Card */}
+        <Reveal delay={80} className="lg:hidden max-w-xl mx-auto">
           <div className="grid grid-cols-3 gap-1.5 p-1.5 bg-[#141627] border border-white/10 rounded-2xl mb-4">
             {stepVisuals.map((item, idx) => {
               const isCurrent = activeStep === idx;
@@ -135,7 +142,7 @@ export const HowItWorks: React.FC = () => {
                   key={item.shortLabel}
                   type="button"
                   onClick={() => setActiveStep(idx)}
-                  className={`min-h-[44px] px-2 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
+                  className={`min-h-[44px] px-2 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
                     isCurrent
                       ? 'bg-gradient-to-r from-[#2457FF] to-[#1E40AF] text-white shadow-md'
                       : 'text-slate-400 hover:text-white'
@@ -147,7 +154,10 @@ export const HowItWorks: React.FC = () => {
             })}
           </div>
 
-          <div className="p-6 rounded-3xl bg-gradient-to-b from-[#181C33] to-[#121424] border border-[#2457FF]/40 shadow-2xl space-y-5">
+          <div
+            key={activeStep}
+            className="animate-step-in p-6 rounded-3xl bg-gradient-to-b from-[#181C33] to-[#121424] border border-[#2457FF]/40 shadow-2xl space-y-5"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#FF684F] block mb-1">
@@ -177,10 +187,18 @@ export const HowItWorks: React.FC = () => {
 
             {stepVisuals[activeStep].previewGraphic}
           </div>
-        </div>
+        </Reveal>
 
         {/* DESKTOP VIEW: 3 Step Cards + Detail Preview */}
         <div className="hidden lg:block">
+          {/* Animated Step Progress Track */}
+          <div className="max-w-3xl mx-auto mb-8 h-1 rounded-full bg-white/10 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-[#2457FF] via-[#A855F7] to-[#FF684F] transition-transform duration-500 ease-out origin-left"
+              style={{ transform: `scaleX(${(activeStep + 1) / 3})` }}
+            />
+          </div>
+
           <div className="grid grid-cols-3 gap-8 mb-12">
             {steps.map((step, index) => {
               const isCurrent = activeStep === index;
@@ -243,7 +261,10 @@ export const HowItWorks: React.FC = () => {
           </div>
 
           {/* Detailed Interactive Preview Card for the Selected Step */}
-          <div className="max-w-4xl mx-auto rounded-3xl bg-[#141627] border border-white/15 p-10 shadow-2xl">
+          <div
+            key={activeStep}
+            className="animate-step-in max-w-4xl mx-auto rounded-3xl bg-[#141627] border border-white/15 p-10 shadow-2xl"
+          >
             <div className="grid grid-cols-12 gap-8 items-center">
               <div className="col-span-7">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#FF684F] block mb-2">

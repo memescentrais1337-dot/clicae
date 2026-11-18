@@ -76,6 +76,7 @@ export interface ServiceItem {
 export const SITE_CONFIG = {
   brand: {
     name: 'CLICAÊ',
+    logoUrl: '/imagem/logo.jpeg',
     domain: 'clicae.com.br',
     domainUrl: 'https://clicae.com.br',
     tagline: 'Muito mais que um link na bio.',

@@ -89,3 +89,218 @@ h1, h2, h3, h4, .font-display {
   }
 }
 
+/* Lightweight GPU-composited animations */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes gradientFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(200%, 0, 0);
+  }
+}
+
+@keyframes floatCounter {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 7px, 0);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleXIn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes sheetUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes introCursorMove {
+  0% {
+    opacity: 0;
+    transform: translate3d(76px, 84px, 0);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(4px, 6px, 0);
+  }
+}
+
+@keyframes introRipple {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.35);
+    opacity: 0;
+  }
+}
+
+@keyframes introTipFlash {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5.5s ease-in-out infinite;
+}
+
+.animate-float-counter {
+  animation: floatCounter 4.8s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-step-in {
+  animation: stepIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-pop-in {
+  animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-scale-x {
+  transform-origin: left;
+  animation: scaleXIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-sheet-up {
+  animation: sheetUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradientFlow 6s ease infinite;
+}
+
+.animate-shimmer-sweep {
+  animation: shimmerSweep 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-intro-cursor {
+  animation: introCursorMove 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-intro-ripple {
+  animation: introRipple 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-intro-ripple-delayed {
+  animation: introRipple 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
+}
+
+.animate-intro-tip-flash {
+  animation: introTipFlash 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-float-counter,
+  .animate-spin-slow,
+  .animate-fade-up,
+  .animate-step-in,
+  .animate-pop-in,
+  .animate-scale-x,
+  .animate-sheet-up,
+  .animate-gradient-flow,
+  .animate-shimmer-sweep,
+  .animate-intro-cursor,
+  .animate-intro-ripple,
+  .animate-intro-ripple-delayed,
+  .animate-intro-tip-flash {
+    animation: none !important;
+  }
+}

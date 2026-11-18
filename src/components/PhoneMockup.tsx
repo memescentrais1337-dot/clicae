@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MessageCircle,
   Menu as MenuIcon,
@@ -74,6 +74,8 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
   className = '',
   onActionClick,
 }) => {
+  const [videoReady, setVideoReady] = useState(false);
+
   const getIcon = (name: PhoneAction['iconName']) => {
     const iconClass = 'w-4 h-4 shrink-0';
     switch (name) {
@@ -145,15 +147,37 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
         {/* Full-Screen Video Display Mode */}
         {screenVideoUrl ? (
           <div className="relative flex-1 w-full h-full overflow-hidden flex flex-col justify-between z-10 pointer-events-none">
-            {/* The Video in Infinite Loop */}
+            {/* Instant lightweight visual fallback while video metadata/frames stream on mobile */}
+            {!videoReady && (
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center"
+                style={{
+                  background: `radial-gradient(circle at 50% 35%, ${theme.primary}22 0%, ${theme.bg} 70%)`,
+                }}
+              >
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center font-display font-black text-xl mb-3 border border-white/15"
+                  style={{ backgroundColor: theme.cardBg, color: theme.primary }}
+                >
+                  {avatarText || brandName.slice(0, 2).toUpperCase()}
+                </div>
+                <span className="text-sm font-bold text-white">{brandName}</span>
+                <span className="text-[11px] text-slate-400 mt-1">{handle}</span>
+              </div>
+            )}
+
+            {/* The Video in Infinite Loop (metadata preload keeps initial load snappy on mobile) */}
             <video
               src={screenVideoUrl}
               autoPlay
               muted
               loop
               playsInline
-              preload="auto"
-              className="absolute inset-0 w-full h-full object-cover"
+              preload="metadata"
+              onLoadedData={() => setVideoReady(true)}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                videoReady ? 'opacity-100' : 'opacity-0'
+              }`}
             />
 
             {/* Subtle scrim at the top and bottom */}
@@ -161,15 +185,15 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
 
             {/* Top mini indicator */}
             <div className="relative z-20 pt-2 px-4 flex justify-between items-center">
-              <span className="text-[9px] font-semibold text-white/90 bg-black/60 px-2.5 py-0.5 rounded-full backdrop-blur-md flex items-center gap-1.5 border border-white/10">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E5A93C] animate-pulse" />
+              <span className="text-[9px] font-semibold text-white/90 bg-black/75 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E5A93C]" />
                 <span>Onze Lounge</span>
               </span>
             </div>
 
             {/* Bottom floating badge */}
             <div className="relative z-20 mt-auto pb-4 px-4 flex flex-col items-center gap-1.5">
-              <div className="px-3.5 py-1.5 rounded-2xl bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white shadow-xl text-center">
+              <div className="px-3.5 py-1.5 rounded-2xl bg-black/80 border border-white/15 text-[11px] font-bold text-white shadow-xl text-center">
                 <span>{videoTitle || `${brandName} — Bio Personalizada`}</span>
               </div>
             </div>
