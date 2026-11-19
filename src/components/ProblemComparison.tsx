@@ -5,6 +5,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { SITE_CONFIG } from '../data/config';
+import { assetUrl } from '../utils/assets';
 import { Reveal } from './Reveal';
 import { XCircle, CheckCircle2, ArrowLeftRight } from 'lucide-react';
 
@@ -158,7 +159,7 @@ export const ProblemComparison: React.FC = () => {
               {/* RIGHT / BASE LAYER: Real Clicaê Experience Image */}
               <div className="absolute inset-0 bg-[#0E1015]">
                 <img
-                  src="/assets/aistudio/WhatsApp_Image_2026-11-17_at_20.56.41_fdba96cb.jpeg"
+                  src={assetUrl('assets/aistudio/WhatsApp_Image_2026-11-17_at_20.56.41_fdba96cb.jpeg')}
                   alt="Página personalizada Clicaê — Metaforja Soluções Metálicas"
                   loading="lazy"
                   decoding="async"

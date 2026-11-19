@@ -7,6 +7,8 @@
  * novos projetos no portfólio e segmentos demonstrativos.
  */
 
+import { assetUrl } from '../utils/assets';
+
 export interface ProjectItem {
   id: string;
   name: string;
@@ -76,7 +78,7 @@ export interface ServiceItem {
 export const SITE_CONFIG = {
   brand: {
     name: 'CLICAÊ',
-    logoUrl: '/imagem/logo.jpeg',
+    logoUrl: assetUrl('imagem/logo.jpeg'),
     domain: 'clicae.com.br',
     domainUrl: 'https://clicae.com.br',
     tagline: 'Muito mais que um link na bio.',
@@ -159,8 +161,8 @@ export const SITE_CONFIG = {
       segment: 'Lounge & Gastrobar',
       description: 'Página personalizada para o estabelecimento, reunindo acessos como cardápio digital dinâmico, reservas de mesas, redes sociais, localização e destaques de drinks autorais.',
       highlight: 'Cardápio digital integrado e reservas instantâneas em ambiente sofisticado.',
-      image: '/imagem/onze_lounge.jpg',
-      videoUrl: '/video/Onze%20Lounge.MP4',
+      image: assetUrl('imagem/onze_lounge.jpg'),
+      videoUrl: assetUrl('video/Onze Lounge.MP4'),
       // Campo de URL configurável para quando o cliente fornecer o domínio final
       url: '',
       tags: ['Cardápio Digital', 'Reservas', 'Localização Waze/Maps', 'Programação Musical', 'Galeria de Drinks'],
@@ -186,8 +188,8 @@ export const SITE_CONFIG = {
       segment: 'Artista & DJ',
       description: 'Experiência digital com identidade visual inspirada na artista, destaque para sua apresentação, momentos dos shows, sets exclusivos e botão direto para solicitação de orçamento.',
       highlight: 'Apresentação imersiva com sets ao vivo, agenda de turnê e contratação direta.',
-      image: '/imagem/dj_hirla.jpg',
-      videoUrl: '', // Insira '/video/dj_hirla.mp4' quando adicionar seu vídeo
+      image: assetUrl('imagem/dj_hirla.jpg'),
+      videoUrl: '', // Insira assetUrl('video/dj_hirla.mp4') quando adicionar seu vídeo
       url: '',
       tags: ['Sets Spotify & Soundcloud', 'Agenda de Shows', 'Press Kit Oficial', 'Solicitar Orçamento', 'Galeria de Fotos'],
       features: [
@@ -212,8 +214,8 @@ export const SITE_CONFIG = {
       segment: 'Clínica Dermatológica & Bem-Estar',
       description: 'Presença digital requintada com vitrine de procedimentos corporais e faciais, fotos antes/depois, endereço físico com mapa e agendamento direto com a recepção.',
       highlight: 'Experiência minimalista e acolhedora com catálogo de procedimentos e agendamento.',
-      image: '/imagem/hero_atmosphere.jpg',
-      videoUrl: '', // Insira '/video/studio_aura.mp4' quando adicionar seu vídeo
+      image: assetUrl('imagem/hero_atmosphere.jpg'),
+      videoUrl: '', // Insira assetUrl('video/studio_aura.mp4') quando adicionar seu vídeo
       url: '',
       tags: ['Procedimentos', 'Agendamento WhatsApp', 'Antes & Depois', 'Localização Privilegiada', 'Dúvidas Frequentes'],
       features: [

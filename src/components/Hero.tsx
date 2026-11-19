@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { SITE_CONFIG } from '../data/config';
+import { assetUrl } from '../utils/assets';
 import { PhoneMockup } from './PhoneMockup';
 import { ArrowRight, ChevronDown, Layers, Palette, Zap } from 'lucide-react';
 
@@ -43,7 +44,7 @@ const SHOWCASE_MODELS: HeroShowcaseModel[] = [
     category: 'Entretenimento & Música',
     bio: 'Experiência digital exclusiva criada sob medida para conectar fãs e agenda.',
     avatarText: 'TC',
-    videoUrl: encodeURI('/video/tocaê.MP4'),
+    videoUrl: assetUrl('video/tocaê.MP4'),
     videoAspectRatio: '1288 / 2404',
     caption: 'Tocaê — Página de bio personalizada em ação',
     glowRgba: 'rgba(36,87,255,0.22)',
@@ -63,7 +64,7 @@ const SHOWCASE_MODELS: HeroShowcaseModel[] = [
     category: 'Marca & Entretenimento',
     bio: 'Visual marcante, links estratégicos e identidade única.',
     avatarText: 'BB',
-    videoUrl: encodeURI('/video/Blackball.MP4'),
+    videoUrl: assetUrl('video/Blackball.MP4'),
     videoAspectRatio: '1290 / 2376',
     caption: 'Blackball — Página de bio personalizada em ação',
     glowRgba: 'rgba(255,104,79,0.2)',
@@ -83,7 +84,7 @@ const SHOWCASE_MODELS: HeroShowcaseModel[] = [
     category: 'Lounge & Gastrobar',
     bio: 'Gastronomia sofisticada, coquetelaria autoral e música ao vivo.',
     avatarText: '11',
-    videoUrl: encodeURI('/video/Onze Lounge.MP4'),
+    videoUrl: assetUrl('video/Onze Lounge.MP4'),
     videoAspectRatio: '1290 / 2506',
     caption: 'Onze Lounge — Página de bio personalizada em ação',
     glowRgba: 'rgba(229,169,60,0.2)',

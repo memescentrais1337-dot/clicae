@@ -3,6 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var loc = window.location;
+        var p = loc.pathname || '/';
+        var s = loc.search || '';
+        var h = loc.hash || '';
+        var baseHref = '/';
+
+        if (p !== '/') {
+          if (p.endsWith('/')) {
+            baseHref = p;
+          } else if (/\.[^/]+$/.test(p)) {
+            baseHref = p.replace(/[^/]+$/, '') || '/';
+          } else {
+            baseHref = p + '/';
+            try {
+              window.history.replaceState(null, '', baseHref + s + h);
+            } catch (e) {}
+          }
+        }
+
+        var baseEl = document.createElement('base');
+        baseEl.href = baseHref;
+        document.head.appendChild(baseEl);
+      })();
+    </script>
     <title>CLICAÊ — Muito mais que um link na bio</title>
     <meta name="description" content="Transformamos o link da sua bio em uma experiência digital exclusiva. Páginas personalizadas para negócios, marcas e profissionais." />
     
@@ -11,7 +37,7 @@
     <meta property="og:url" content="https://clicae.com.br" />
     <meta property="og:title" content="CLICAÊ — Muito mais que um link na bio" />
     <meta property="og:description" content="Sua marca é única. Sua bio também deveria ser. Criamos mini-sites e páginas de links exclusivas com a identidade da sua marca." />
-    <meta property="og:image" content="/imagem/logo.jpeg" />
+    <meta property="og:image" content="./imagem/logo.jpeg" />
     <meta property="og:site_name" content="CLICAÊ" />
     <meta property="og:locale" content="pt_BR" />
     
@@ -19,12 +45,12 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CLICAÊ — Muito mais que um link na bio" />
     <meta name="twitter:description" content="Sua marca é única. Sua bio também deveria ser. Páginas personalizadas para sua presença digital." />
-    <meta name="twitter:image" content="/imagem/logo.jpeg" />
+    <meta name="twitter:image" content="./imagem/logo.jpeg" />
     <meta name="twitter:creator" content="@clicaebio" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="/imagem/logo.jpeg" />
-    <link rel="apple-touch-icon" href="/imagem/logo.jpeg" />
+    <link rel="icon" type="image/jpeg" href="./imagem/logo.jpeg" />
+    <link rel="apple-touch-icon" href="./imagem/logo.jpeg" />
 
     <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
