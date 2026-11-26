@@ -154,13 +154,13 @@ export const ProblemComparison: React.FC = () => {
               onPointerCancel={() => {
                 isDragging.current = false;
               }}
-              className="relative w-full aspect-[9/16] rounded-[30px] sm:rounded-[34px] overflow-hidden border border-white/15 shadow-2xl select-none cursor-ew-resize bg-[#0E1015] touch-pan-y"
+              className="relative w-full aspect-[1290/2360] rounded-[30px] sm:rounded-[34px] overflow-hidden border border-white/15 shadow-2xl select-none cursor-ew-resize bg-[#0E1015] touch-pan-y"
             >
               {/* RIGHT / BASE LAYER: Real Clicaê Experience Image */}
-              <div className="absolute inset-0 bg-[#0E1015]">
+              <div className="absolute inset-0 bg-[#F3F6FA]">
                 <img
-                  src={assetUrl('assets/aistudio/WhatsApp_Image_2026-11-17_at_20.56.41_fdba96cb.jpeg')}
-                  alt="Página personalizada Clicaê — Metaforja Soluções Metálicas"
+                  src={assetUrl('assets/aistudio/IMG_6272_d57b29e8.PNG')}
+                  alt="Página personalizada Clicaê — Capoeira Nossa Nação"
                   loading="lazy"
                   decoding="async"
                   draggable={false}
@@ -175,25 +175,28 @@ export const ProblemComparison: React.FC = () => {
               >
                 <div className="w-full flex flex-col items-center text-center opacity-85">
                   <div className="w-16 h-16 rounded-full bg-slate-600 mb-3 flex items-center justify-center text-slate-200 font-bold text-sm">
-                    MF
+                    CN
                   </div>
-                  <span className="text-sm font-bold text-slate-200">@metaforja_go</span>
+                  <span className="text-sm font-bold text-slate-200">@capoeiranossanacao</span>
                   <p className="text-xs text-slate-400 mt-1 max-w-[230px]">
-                    Soluções metálicas · Goiânia/GO
+                    Mestre Apache · Capoeira
                   </p>
 
                   <div className="w-full space-y-3 mt-8">
                     <div className="p-3.5 rounded-full bg-white text-slate-900 text-xs font-semibold text-center shadow">
-                      Solicitar orçamento
+                      Fale com a gente no WhatsApp
                     </div>
                     <div className="p-3.5 rounded-full bg-white text-slate-900 text-xs font-semibold text-center shadow">
-                      Conheça a Metaforja (Site)
+                      Cadastro de aluno
                     </div>
                     <div className="p-3.5 rounded-full bg-white text-slate-900 text-xs font-semibold text-center shadow">
-                      Acompanhe no Instagram
+                      Acesse nosso site
                     </div>
                     <div className="p-3.5 rounded-full bg-white text-slate-900 text-xs font-semibold text-center shadow">
-                      Galpões, Mezaninos e Pergolados
+                      Como chegar (Google Maps)
+                    </div>
+                    <div className="p-3.5 rounded-full bg-white text-slate-900 text-xs font-semibold text-center shadow">
+                      Siga nosso Instagram
                     </div>
                   </div>
                 </div>
